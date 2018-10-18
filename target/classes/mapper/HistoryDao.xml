@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.transbox.dao.HistoryDao">
+
+
+
+    <select id="gainTransferInfoList" resultType="TransferInfo">
+
+        SELECT t.id,t.transferNumber organSeg,t.organ,t.trueName transferPerson,t.fromCity,t.getTime,t.toHospName
+        FROM transfer t,account a,hospital h,box b
+        WHERE t.to_hosp_id = h.hospitalid
+        AND h.account_id = a.accountid
+        AND b.boxid = t.box_id
+
+        <if test="filterStatus == 0">
+        AND t.filterStatus=0
+        </if>
+
+        <if test="cookieUserName != 'admin'">
+        AND a.username=#{cookieUserName};
+        </if>
+        ORDER  BY t.getTime
+        <if test="boxNo == 1">
+            ,b.model
+        </if>
+        <if test="hospital == 1">
+            ,h.name
+        </if>
+        DESC
+
+        limit #{page},#{pageSize}
+
+
+    </select>
+
+
+
+    <select id="gainAllBox" resultType="String">
+         SELECT remark FROM transferRecord  GROUP  BY remark  ORDER BY recordAt DESC;
+    </select>
+
+
+    <select id="gainNoOrganSegFirstTime" resultType="String">
+        SELECT  MAX(recordAt) FROM  transferRecord WHERE  transfer_id='1' AND remark = #{remark}
+    </select>
+           <!--SELECT  MAX(recordAt) FROM  transferRecord WHERE  transfer_id='1' AND remark = #{remark} AND recordAt  <![CDATA[ < ]]> #{maxTime}-->
+    <select id="gainNoOrganSegTime" resultType="String">
+        SELECT recordAt FROM (SELECT if(TIMEDIFF(@time,recordAt)>'00:30:00',@g:=@g+1,@g) grop,@time:=recordAt,recordAt FROM transferRecord,(SELECT @time:='00:00:30',@g:=0) f
+        WHERE  transfer_id='1' AND remark = #{remark} AND recordAt  <![CDATA[ < ]]> #{maxTime} ORDER BY recordAt DESC  ) a GROUP BY grop limit 1
+
+    </select>
+
+    <select id="gainOrganSegList" resultType="BoxOrganSegInfo">
+
+         SELECT transfer_id,recordAt  FROM  transferRecord WHERE  transfer_id!='1' AND remark = #{remark} GROUP BY transfer_id ORDER BY  recordAt DESC
+
+    </select>
+
+    <select id="gainNoMaxTemperature" resultType="Double">
+        SELECT MAX(temperature) FROM (SELECT id,remark,recordAt,transfer_id,longitude,latitude,open,collision,temperature,power,TIMESTAMPDIFF(SECOND,recordAt,#{maxTime})/30 a,@n:=(@n+1) b FROM transferRecord,(SELECT @n := -1) t WHERE remark = #{remark} AND transfer_id='1'
+        AND recordAt <![CDATA[ <= ]]> #{maxTime} ORDER BY recordAt DESC) a WHERE a.a <![CDATA[ <= ]]> a.b+10;
+    </select>
+
+    <select id="gainNoMinTemperature" resultType="Double">
+        SELECT MIN(temperature) FROM (SELECT id,remark,recordAt,transfer_id,longitude,latitude,open,collision,temperature,power,TIMESTAMPDIFF(SECOND,recordAt,#{maxTime})/30 a,@n:=(@n+1) b FROM transferRecord,(SELECT @n := -1) t WHERE remark = #{remark} AND transfer_id='1'
+        AND recordAt <![CDATA[ <= ]]> #{maxTime} ORDER BY recordAt DESC) a WHERE a.a <![CDATA[ <= ]]> a.b+10;
+    </select>
+
+    <select id="gainNoAvgTemperature" resultType="Double">
+        SELECT AVG(temperature) FROM (SELECT id,remark,recordAt,transfer_id,longitude,latitude,open,collision,temperature,power,TIMESTAMPDIFF(SECOND,recordAt,#{maxTime})/30 a,@n:=(@n+1) b FROM transferRecord,(SELECT @n := -1) t WHERE remark = #{remark} AND transfer_id='1'
+        AND recordAt <![CDATA[ <= ]]> #{maxTime} ORDER BY recordAt DESC) a WHERE a.a <![CDATA[ <= ]]> a.b+10;
+    </select>
+
+    <select id="gainNoDetail" resultType="BoxOrganSegInfo">
+        SELECT remark,longitude,latitude,recordAt,power FROM (SELECT id,remark,recordAt,transfer_id,longitude,latitude,open,collision,temperature,power,TIMESTAMPDIFF(SECOND,recordAt,#{maxTime})/30 a,@n:=(@n+1) b FROM transferRecord,(SELECT @n := -1) t WHERE remark = #{remark} AND transfer_id='1'
+        AND recordAt <![CDATA[ <= ]]> #{maxTime} ORDER BY recordAt DESC) a WHERE a.a <![CDATA[ <= ]]> a.b+10;
+    </select>
+
+    <select id="gainTransferInfo" resultType="TransferInfo">
+        SELECT t.id,t.transferNumber organSeg,t.organ,t.trueName transferPerson,t.fromCity,t.getTime,t.toHospName
+        FROM transfer t WHERE transferid=#{transferId}
+    </select>
+
+
+
+    <select id="gainMinTemperature" resultType="Double">
+        SELECT MIN(temperature)  FROM transferRecord WHERE  transfer_id=#{transferId}
+    </select>
+
+    <select id="gainMaxTemperature" resultType="Double">
+        SELECT MAX(temperature)  FROM transferRecord WHERE  transfer_id=#{transferId}
+    </select>
+
+    <select id="gainAvgTemperature" resultType="Double">
+        SELECT AVG(temperature)  FROM transferRecord WHERE  transfer_id=#{transferId}
+    </select>
+    <select id="gainDetail" resultType="BoxOrganSegInfo">
+        SELECT remark,longitude,latitude,recordAt,power FROM  transferRecord WHERE transfer_id=#{transferId} ORDER BY recordAt DESC;
+    </select>
+</mapper>

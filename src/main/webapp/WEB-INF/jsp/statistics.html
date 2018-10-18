@@ -1,0 +1,270 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>Title</title>
+    <%@include file="common/head.jsp" %>
+    <%@include file="common/tag.jsp" %>
+    <style>
+        html, body {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            background-color: #F8F8F8;
+        }
+
+        #header {
+            background-color: black;
+            color: white;
+            text-align: center;
+
+        }
+
+        #nav_out_out {
+            line-height: 30px;
+
+            height: 400px;
+            width: 200px;
+
+            text-align: center;
+            position: fixed;
+            right: 2%;
+            top: 40%;
+            overflow: hidden;
+        }
+
+        #nav_out {
+            line-height: 30px;
+
+            height: 400px;
+            width: 200px;
+
+            text-align: center;
+
+            right: 2%;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        #nav {
+            line-height: 30px;
+            height: 400px;
+            width: 220px;
+
+            text-align: center;
+
+            right: 2%;
+
+            overflow-x: hidden;
+        }
+
+        #section {
+            width: 85%;
+            float: left;
+            text-align: center;
+
+            margin: 0 auto;
+        }
+
+        #content {
+            width: 70%;
+
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .panel panel-default {
+            border-top: 2px solid #cfdbe2;
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="header">
+    <h1>City Gallery</h1>
+    <h1>City Gallery</h1>
+    <h1>City Gallery</h1>
+    <h1>City Gallery</h1>
+
+</div>
+
+
+<!--<div id="section">-->
+<!--<div id="content">-->
+<!--<h2>London</h2>-->
+<!--<p>-->
+<!--London is the capital city of England. It is the most populous city in the United Kingdom,-->
+<!--with a metropolitan area of over 13 million inhabitants.-->
+<!--</p>-->
+<!--<p>-->
+<!--Standing on the River Thames, London has been a major settlement for two millennia,-->
+<!--its history going back to its founding by the Romans, who named it Londinium.-->
+
+<!--</p>-->
+
+<!--</div>-->
+<!--</div>-->
+<!--<div id="nav_out_out">-->
+<!--<div id="nav_out">-->
+<!--<div id="nav">-->
+<!--London<br>-->
+<!--Paris<br>-->
+<!--Tokyo<br>-->
+
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!-- Main section-->
+<section>
+
+    <div>
+        <div>
+
+        </div>
+        <div id="nav_out_out">
+
+            <div id="nav_out">
+                <!-- Page content-->
+                <div id="nav" class="content-wrapper">
+                    <div class="row">
+                        <!-- START dashboard sidebar-->
+                        <aside class="col-lg-11">
+
+                            <!-- END loader widget-->
+                            <!-- START messages and activity-->
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="panel-title">缩略图</div>
+                                </div>
+                                <!-- START list group-->
+                                <div class="list-group">
+                                    <!-- START list group item-->
+                                    <div class="list-group-item">
+                                        <div class="media-box">
+                                            <div class="pull-left">
+                                 <span class="fa-stack">
+                                    <em class="fa fa-circle fa-stack-2x text-purple"></em>
+                                    <em class="fa fa-cloud-upload fa-stack-1x fa-inverse text-white"></em>
+                                 </span>
+                                            </div>
+                                            <div class="media-box-body clearfix">
+                                                <small class="text-muted pull-right ml">15m</small>
+                                                <div class="media-box-heading"><a href="#" class="text-purple m0">NEW
+                                                    FILE</a>
+                                                </div>
+                                                <p class="m0">
+                                                    <small><a href="#">Bootstrap.xls</a>
+                                                    </small>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- END list group item-->
+                                    <!-- START list group item-->
+                                    <div class="list-group-item">
+                                        <div class="media-box">
+                                            <div class="pull-left">
+                                 <span class="fa-stack">
+                                    <em class="fa fa-circle fa-stack-2x text-info"></em>
+                                    <em class="fa fa-file-text-o fa-stack-1x fa-inverse text-white"></em>
+                                 </span>
+                                            </div>
+                                            <div class="media-box-body clearfix">
+                                                <small class="text-muted pull-right ml">2h</small>
+                                                <div class="media-box-heading"><a href="#" class="text-info m0">NEW
+                                                    DOCUMENT</a>
+                                                </div>
+                                                <p class="m0">
+                                                    <small><a href="#">Bootstrap.doc</a>
+                                                    </small>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- END list group item-->
+                                    <!-- START list group item-->
+                                    <div class="list-group-item">
+                                        <div class="media-box">
+                                             <div>
+
+                                             </div>
+                                        </div>
+                                    </div>
+                                    <!-- END list group item-->
+                                    <!-- START list group item-->
+                                    <div class="list-group-item">
+                                        <div class="media-box">
+                                            <div class="pull-left">
+                                 <span class="fa-stack">
+                                    <em class="fa fa-circle fa-stack-2x text-success"></em>
+                                    <em class="fa fa-clock-o fa-stack-1x fa-inverse text-white"></em>
+                                 </span>
+                                            </div>
+                                            <div class="media-box-body clearfix">
+                                                <small class="text-muted pull-right ml">15h</small>
+                                                <div class="media-box-heading"><a href="#" class="text-success m0">NEW
+                                                    MEETING</a>
+                                                </div>
+                                                <p class="m0">
+                                                    <small>On
+                                                        <em>10/12/2015 09:00 am</em>
+                                                    </small>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- END list group item-->
+                                    <!-- START list group item-->
+                                    <div class="list-group-item">
+                                        <div class="media-box">
+                                            <div class="pull-left">
+                                 <span class="fa-stack">
+                                    <em class="fa fa-circle fa-stack-2x text-warning"></em>
+                                    <em class="fa fa-tasks fa-stack-1x fa-inverse text-white"></em>
+                                 </span>
+                                            </div>
+                                            <div class="media-box-body clearfix">
+                                                <small class="text-muted pull-right ml">1w</small>
+                                                <div class="media-box-heading"><a href="#" class="text-warning m0">TASKS
+                                                    COMPLETION</a>
+                                                </div>
+                                                <div class="progress progress-xs m0">
+                                                    <div role="progressbar" aria-valuenow="22" aria-valuemin="0"
+                                                         aria-valuemax="100" style="width: 22%"
+                                                         class="progress-bar progress-bar-warning progress-bar-striped">
+                                                        <span class="sr-only">22% Complete</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- END list group item-->
+                                </div>
+                                <!-- END list group-->
+                                <!-- START panel footer-->
+                                <div class="panel-footer clearfix">
+
+                                </div>
+                                <!-- END panel-footer-->
+                            </div>
+                            <!-- END messages and activity-->
+                        </aside>
+                        <!-- END dashboard sidebar-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+<!-- 新 Bootstrap 核心 CSS 文件 -->
+<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- 可选的Bootstrap主题文件（一般不使用） -->
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"></script>
+<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+<script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</html>

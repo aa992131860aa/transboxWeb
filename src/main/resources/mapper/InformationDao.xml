@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.transbox.dao.InformationDao">
+    <select id="gainInformations" resultType="Information">
+           select id,file_no,file_name,file_url,DATE_FORMAT(create_time,'%Y-%m-%d') create_time,download_num from information order by  create_time desc
+    </select>
+
+    <select id="gainHospital" resultType="Hospital">
+        <if test="cookieUserName == 'admin'">
+            SELECT h.name hospital_name,h.hospitalid hospital_id FROM hospital h where h.hospitalid in (SELECT to_hosp_id FROM transfer t GROUP BY
+            t.to_hosp_id)
+        </if>
+        <if test="cookieUserName != 'admin'">
+            SELECT h.name hospital_name,h.hospitalid hospital_id FROM hospital h,account a WHERE a.accountid =
+            h.account_id AND a.username = #{cookieUserName}
+        </if>
+    </select>
+</mapper>

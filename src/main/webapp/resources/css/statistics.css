@@ -1,0 +1,25 @@
+#temperatureTemp {
+    background-color: #3BBFE7;
+}
+
+#temperatureSpan {
+    color: #FFFFFF;
+}
+.sparkH{
+    height: 10px;
+}
+/**
+不换行
+ */
+div{
+    white-space:nowrap;
+}
+
+
+/*#regionTemp {*/
+    /*background-color: #FFFFFF;*/
+/*}*/
+
+/*#regionSpan {*/
+    /*background-color: #0b0b0b;*/
+/*}*/

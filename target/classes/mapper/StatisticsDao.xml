@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.transbox.dao.StatisticsDao">
+    <!--温湿度-->
+    <select id="gainTemperatureAndHumidity" resultType="TemperatureAndHumidity">
+
+
+        SELECT FORMAT(AVG(tr.temperature),1) temperature,FORMAT(AVG(tr.humidity),1) humidity ,
+        DATE_FORMAT(getTime,'%m-%d %H:%i') as recordAt FROM transferRecord tr ,
+        (SELECT distinct(t.id) ,t.getTime FROM transfer t,hospital h,account ac,box b
+        <if test="region!=null and region!=''">,provinces p,cities c</if>
+        WHERE 1=1 and b.hosp_id=h.hospitalid and ac.accountid=h.account_id and t.to_hosp_id=h.hospitalid and
+        t.`status`='done'
+        <if test="cookieUserName != 'admin'">and ac.username = #{cookieUserName}</if>
+        <if test="userName!=null and userName!=''">and t.trueName=#{userName}</if>
+        <if test="organType!=null and organType!=''">and t.organ=#{organType}</if>
+        <if test="startTime!=null and startTime!=''">and t.getTime>=#{startTime}</if>
+        <if test="endTime!=null and endTime!=''">and t.getTime<![CDATA[ <= ]]>#{endTime}</if>
+        <if test="region!=null and region!=''">and c.provinceid=p.provinceid and t.fromCity like
+            CONCAT('%',substring_index(#{region},'市', 1),'%')
+        </if>
+        ) a
+        WHERE a.id = tr.transfer_id GROUP BY a.id
+    </select>
+
+    <!--转运人-->
+    <select id="gainTransferPerson" resultType="String">
+        SELECT true_name FROM users AS u JOIN hospital h ON u.hospital_id=h.hospitalid JOIN account AS ac ON
+        ac.accountid=h.account_id WHERE 1=1
+        <if test="cookieUserName != 'admin'">
+            and ac.username=#{cookieUserName}
+        </if>
+
+    </select>
+    <!--器官类型-->
+    <select id="gainOrganType" resultType="String">
+        SELECT organ FROM organ_type
+    </select>
+
+    <!--器官类型 用器官类型排序-->
+    <select id="gainOrganTypeOrder" resultType="String">
+        SELECT organ FROM organ_type order by organ
+    </select>
+    <!--区域数量显示-->
+    <select id="gainRegion" resultType="Region">
+        SELECT province,organ,count(organ) organCount from(SELECT
+        DISTINCT(t.id),p.province,t.organ,t.transferNumber,t.fromCity FROM transfer t,users u,hospital h,account
+        ac,box b,provinces p,cities c WHERE 1=1 and t.`status`='done'
+        and b.hosp_id=h.hospitalid and ac.accountid=h.account_id and t.to_hosp_id=h.hospitalid
+
+        <if test="cookieUserName != 'admin'">and ac.username = #{cookieUserName}</if>
+        <if test="userName!=null and userName!=''">and t.trueName=#{userName}</if>
+        <if test="organType!=null and organType!=''">and t.organ=#{organType}</if>
+        <if test="startTime!=null and startTime!=''">and t.getTime>=#{startTime}</if>
+        <if test="endTime!=null and endTime!=''">and t.getTime<![CDATA[ <= ]]>#{endTime}</if>
+
+        <choose>
+            <when test="region!=null and region!=''">
+                and t.fromCity like CONCAT('%',substring_index(c.city,'市', 1),'%')
+                and t.fromCity like CONCAT('%',substring_index(#{region},'市', 1),'%')
+            </when>
+            <otherwise>
+                and t.fromCity like CONCAT('%',substring_index(c.city,'市', 1),'%')
+            </otherwise>
+        </choose>
+
+
+        and c.provinceid=p.provinceid ) a group by a.organ,a.province ORDER BY a.province,a.organ;
+    </select>
+
+    <select id="gainOrgan" resultType="Organ">
+        SELECT organ,count(organ) organCount from(SELECT
+        DISTINCT(t.id) ,t.organ,t.transferNumber,t.fromCity
+        FROM transfer t,users u,hospital h,account
+        ac,box b
+        <if test="region!=null and region!=''">,provinces p,cities c</if>
+        WHERE 1=1 and t.`status`='done'
+        and b.hosp_id=h.hospitalid and ac.accountid=h.account_id and t.to_hosp_id=h.hospitalid
+        <if test="cookieUserName != 'admin'">and ac.username = #{cookieUserName}</if>
+        <if test="userName!=null and userName!=''">and t.trueName=#{userName}</if>
+        <if test="organType!=null and organType!=''">and t.organ=#{organType}</if>
+        <if test="startTime!=null and startTime!=''">and t.getTime>=#{startTime}</if>
+        <if test="endTime!=null and endTime!=''">and t.getTime<![CDATA[ <= ]]>#{endTime}</if>
+        <if test="region!=null and region!=''">and c.provinceid=p.provinceid
+            and t.fromCity like CONCAT('%',substring_index(c.city,'市', 1),'%')
+            and t.fromCity like CONCAT('%',substring_index(#{region},'市', 1),'%')
+        </if>
+        ) a group by a.organ ORDER BY a.organ;
+    </select>
+
+    <select id="gainTransfer" resultType="Transfer">
+        SELECT trueName,count(trueName) trueNameCount from(SELECT
+        DISTINCT(t.id) ,t.organ,t.trueName,t.fromCity
+        FROM transfer t,users u,hospital h,account
+        ac,box b
+        <if test="region!=null and region!=''">,provinces p,cities c</if>
+        WHERE 1=1 and t.`status`='done'
+        and b.hosp_id=h.hospitalid and ac.accountid=h.account_id and t.to_hosp_id=h.hospitalid
+        <if test="cookieUserName != 'admin'">and ac.username = #{cookieUserName}</if>
+        <if test="userName!=null and userName!=''">and t.trueName=#{userName}</if>
+        <if test="organType!=null and organType!=''">and t.organ=#{organType}</if>
+        <if test="startTime!=null and startTime!=''">and t.getTime>=#{startTime}</if>
+        <if test="endTime!=null and endTime!=''">and t.getTime<![CDATA[ <= ]]>#{endTime}</if>
+        <if test="region!=null and region!=''">and c.provinceid=p.provinceid
+            and t.fromCity like CONCAT('%',substring_index(c.city,'市', 1),'%')
+            and t.fromCity like CONCAT('%',substring_index(#{region},'市', 1),'%')
+        </if>
+        ) a group by a.trueName ORDER BY a.trueName;
+    </select>
+
+</mapper>

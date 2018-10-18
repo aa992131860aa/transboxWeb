@@ -1,0 +1,592 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.transbox.dao.ReportDao">
+   <select id="gainZone" resultType="String">
+       SELECT address FROM  hospital WHERE  hospitalid=#{hospitalId}
+   </select>
+    <select id="gainReportOrgan" resultType="Page2">
+       SELECT organ name,count(organ) z FROM transfer t WHERE  1=1
+       AND  t.to_hosp_id = #{hospitalId}
+        AND t.filterStatus=0
+       AND t.getTime <![CDATA[ < ]]> #{endTime} AND t.getTime>=#{startTime} Group BY t.organ;
+    </select>
+
+    <select id="gainReportOrganDetail" resultType="ReportDetail">
+        SELECT t.id,t.transferNumber organSeg,t.organ,t.trueName transferPerson,t.fromCity,t.getTime,t.toHospName  FROM transfer t WHERE  1=1
+        AND  t.to_hosp_id = #{hospitalId}
+         AND t.filterStatus=0
+        AND t.getTime <![CDATA[ < ]]> #{endTime} AND t.getTime>=#{startTime}  AND t.organ=#{organ} ORDER BY t.getTime DESC limit #{page},#{pageSize};
+    </select>
+
+    <select id="gainReportOrganDetailTotal" resultType="Integer">
+        SELECT count(t.id) c  FROM transfer t WHERE  1=1
+        AND  t.to_hosp_id = #{hospitalId}
+         AND t.filterStatus=0
+        AND t.getTime <![CDATA[ < ]]> #{endTime} AND t.getTime>=#{startTime}  AND t.organ=#{organ} GROUP BY t.organ;
+    </select>
+
+    <select id="gainHospital" resultType="Hospital">
+       SELECT  h.name hospital_name,h.hospitalid hospital_id FROM  hospital h,account a WHERE  a.accountid = h.account_id AND a.username = #{cookieUserName}
+    </select>
+    <!--区域数量显示-->
+    <select id="gainPage3" resultType="Page3">
+        SELECT province name,count(organ) value from (SELECT
+        DISTINCT(t.id),p.province,t.organ,t.transferNumber,t.fromCity FROM transfer t,users u,hospital h,box b,provinces p,cities c WHERE 1=1 and t.`status`='done'
+        and b.hosp_id=h.hospitalid
+        and t.to_hosp_id=h.hospitalid
+        and h.hospitalid = #{hospitalId}
+        and t.getTime>=#{startTime}
+        and t.getTime<![CDATA[ < ]]>#{endTime}
+        and t.filterStatus=0
+        and t.fromCity like CONCAT('%',substring_index(c.city,'市', 1),'%')
+        and c.provinceid=p.provinceid ) a group by a.province ORDER BY a.province;
+    </select>
+
+    <select id="gainPage3Detail" resultType="ReportDetail">
+        SELECT
+        DISTINCT(t.id) id,t.transferNumber organSeg,t.organ,t.trueName transferPerson,t.fromCity,t.getTime,t.toHospName FROM transfer t,users u,hospital h,box b,provinces p,cities c WHERE 1=1 and t.`status`='done'
+        and b.hosp_id=h.hospitalid
+        and t.to_hosp_id=h.hospitalid
+        and h.hospitalid = #{hospitalId}
+        and t.getTime>=#{startTime}
+        and t.getTime<![CDATA[ < ]]>#{endTime}
+        and t.filterStatus=0
+        and t.fromCity like CONCAT('%',substring_index(c.city,'市', 1),'%')
+        and c.provinceid=p.provinceid
+        and p.province like CONCAT('%',#{province},'%')
+        order by t.getTime desc
+        limit #{page},#{pageSize};
+
+    </select>
+
+
+    <select id="gainPage4Total" resultType="Integer">
+        SELECT  id  FROM transfer t
+        WHERE  1=1
+        AND t.to_hosp_id=#{hospitalId}
+        AND t.getTime>=#{startTime}
+        AND t.getTime<![CDATA[ < ]]>#{endTime}
+        AND t.filterStatus = 0
+    </select>
+
+
+    <select id="gainPage4" resultType="String">
+        SELECT MIN(tr.recordAt)  FROM transferRecord tr WHERE tr.transfer_id = #{transferId}
+        UNION ALL
+        SELECT MAX(tr.recordAt)  FROM transferRecord tr WHERE tr.transfer_id = #{transferId}
+    </select>
+
+
+    <select id="gainPage5Open" resultType="String">
+        SELECT  a.transferid from (SELECT t.transferid,count(tr.open) open FROM transfer t,transferRecord tr
+        WHERE t.transferid = tr.transfer_id
+
+        AND t.to_hosp_id=#{hospitalId}
+        AND t.getTime >= #{startTime}
+        AND t.getTime <![CDATA[ < ]]> #{endTime}
+        AND t.filterStatus = 0
+        AND tr.open=1
+        GROUP  BY  t.transferid
+        ) a WHERE   a.open > 2
+        UNION
+           SELECT  a.transferid from (SELECT t.transferid,count(tr.open) open FROM transfer t LEFT  JOIN transferRecord tr
+        ON t.transferid = tr.transfer_id
+
+        WHERE t.to_hosp_id=#{hospitalId}
+        AND t.getTime >= #{startTime}
+        AND t.getTime <![CDATA[ < ]]> #{endTime}
+        AND t.filterStatus = 0
+        AND tr.open is NULL
+        GROUP  BY  t.transferid
+        ) a
+
+    </select>
+
+    <select id="gainPage5OpenDetailNormal" resultType="ReportDetail">
+
+        SELECT  organSeg,organ, transferPerson,fromCity,getTime,toHospName, id,open FROM (
+        SELECT  organSeg,organ, transferPerson,fromCity,getTime,toHospName, id,open from
+        (SELECT  t.transferNumber organSeg,t.organ,t.trueName transferPerson,t.fromCity,t.getTime,t.toHospName, t.transferid id,count(tr.open) open
+         FROM transfer t,transferRecord tr
+        WHERE
+        t.transferid = tr.transfer_id
+        AND t.to_hosp_id=#{hospitalId}
+        AND t.getTime >= #{startTime}
+        AND t.getTime <![CDATA[ < ]]> #{endTime}
+        AND t.filterStatus = 0
+        AND tr.open=1
+        GROUP  BY  t.transferid
+        ) a WHERE   a.open > 2
+        UNION
+           SELECT  organSeg,organ, transferPerson,fromCity,getTime,toHospName, id,if(open,open,-1) open from (SELECT  t.transferNumber organSeg,t.organ,t.trueName transferPerson,t.fromCity,t.getTime,t.toHospName, t.transferid id,tr.open open FROM transfer t LEFT  JOIN  transferRecord tr
+        ON
+        t.transferid = tr.transfer_id
+        WHERE t.to_hosp_id=#{hospitalId}
+        AND t.getTime >= #{startTime}
+        AND t.getTime <![CDATA[ < ]]> #{endTime}
+        AND t.filterStatus = 0
+        AND tr.open is NULL
+        GROUP  BY  t.transferid
+        ) a  )b   limit #{page},#{pageSize};
+
+    </select>
+    <select id="gainPage5OpenDetailNormalTotalTemp" resultType="Integer">
+
+        SELECT  count(id) count FROM (
+        SELECT  organSeg,organ, transferPerson,fromCity,getTime,toHospName, id,open from
+        (SELECT  t.transferNumber organSeg,t.organ,t.trueName transferPerson,t.fromCity,t.getTime,t.toHospName, t.transferid id,count(tr.open) open
+        FROM transfer t,transferRecord tr
+        WHERE
+        t.transferid = tr.transfer_id
+        AND t.to_hosp_id=#{hospitalId}
+        AND t.getTime >= #{startTime}
+        AND t.getTime <![CDATA[ < ]]> #{endTime}
+        AND t.filterStatus = 0
+        AND tr.open=1
+        GROUP  BY  t.transferid
+        ) a WHERE   a.open > 2
+        UNION
+        SELECT  organSeg,organ, transferPerson,fromCity,getTime,toHospName, id,open from (SELECT  t.transferNumber organSeg,t.organ,t.trueName transferPerson,t.fromCity,t.getTime,t.toHospName, t.transferid id,tr.open open FROM transfer t LEFT  JOIN  transferRecord tr
+        ON
+        t.transferid = tr.transfer_id
+        WHERE t.to_hosp_id=#{hospitalId}
+        AND t.getTime >= #{startTime}
+        AND t.getTime <![CDATA[ < ]]> #{endTime}
+        AND t.filterStatus = 0
+        AND tr.open IS  NULL
+        GROUP  BY  t.transferid
+        ) a  )b
+
+    </select>
+
+    <select id="gainPage5OpenDetailNormalTemp" resultType="String">
+
+        SELECT  id FROM (
+        SELECT  organSeg,organ, transferPerson,fromCity,getTime,toHospName, id,open from
+        (SELECT  t.transferNumber organSeg,t.organ,t.trueName transferPerson,t.fromCity,t.getTime,t.toHospName, t.transferid id,count(tr.open) open
+        FROM transfer t,transferRecord tr
+        WHERE
+        t.transferid = tr.transfer_id
+        AND t.to_hosp_id=#{hospitalId}
+        AND t.getTime >= #{startTime}
+        AND t.getTime <![CDATA[ < ]]> #{endTime}
+        AND t.filterStatus = 0
+        AND tr.open=1
+        GROUP  BY  t.transferid
+        ) a WHERE   a.open > 2
+        UNION
+        SELECT  organSeg,organ, transferPerson,fromCity,getTime,toHospName, id,open from (SELECT  t.transferNumber organSeg,t.organ,t.trueName transferPerson,t.fromCity,t.getTime,t.toHospName, t.transferid id,tr.open open FROM transfer t,transferRecord tr
+        WHERE
+        t.transferid = tr.transfer_id
+        AND t.to_hosp_id=#{hospitalId}
+        AND t.getTime >= #{startTime}
+        AND t.getTime <![CDATA[ < ]]> #{endTime}
+        AND t.filterStatus = 0
+        AND tr.open=0
+        GROUP  BY  t.transferid
+        ) a  )b
+
+    </select>
+
+
+    <select id="gainPage5OpenDetailNoNormal" resultType="ReportDetail">
+
+        SELECT  t.transferNumber organSeg,t.organ,t.trueName transferPerson,t.fromCity,t.getTime,t.toHospName, t.transferid id,count(tr.open) open FROM transfer t LEFT JOIN transferRecord tr
+        ON t.transferid = tr.transfer_id
+        WHERE
+        t.transferid = #{transferId}
+        AND  tr.open=1
+        GROUP  BY  t.transferid
+        UNION
+          SELECT  t.transferNumber organSeg,t.organ,t.trueName transferPerson,t.fromCity,t.getTime,t.toHospName, t.transferid id,tr.open  FROM transfer t LEFT JOIN transferRecord tr
+        ON t.transferid = tr.transfer_id
+        WHERE
+        t.transferid = #{transferId}
+        AND  tr.open=0
+        GROUP  BY  t.transferid
+
+
+    </select>
+
+    <select id="gainPage5OpenDetailTotal" resultType="String">
+        SELECT  t.id  FROM transfer t
+        WHERE  1=1
+        AND t.to_hosp_id=#{hospitalId}
+        AND t.getTime>=#{startTime}
+        AND t.getTime<![CDATA[ < ]]>#{endTime}
+        AND t.filterStatus = 0
+
+    </select>
+    <select id="gainPage5OpenDetailNormalTotal" resultType="String">
+
+        SELECT  a.transferid from (SELECT t.transferid,count(tr.open) open FROM transfer t,transferRecord tr
+        WHERE t.transferid = tr.transfer_id
+
+        AND t.to_hosp_id=#{hospitalId}
+        AND t.getTime >= #{startTime}
+        AND t.getTime <![CDATA[ < ]]> #{endTime}
+        AND t.filterStatus = 0
+        AND tr.open=1
+        GROUP  BY  t.transferid
+        ) a WHERE   a.open > 2
+        UNION
+
+           SELECT  a.transferid from (SELECT t.transferid,tr.open open FROM transfer t LEFT  JOIN  transferRecord tr
+        ON t.transferid = tr.transfer_id
+
+        WHERE t.to_hosp_id=#{hospitalId}
+        AND t.getTime >= #{startTime}
+        AND t.getTime <![CDATA[ < ]]> #{endTime}
+        AND t.filterStatus = 0
+        AND tr.open IS  NULL
+        GROUP  BY  t.transferid
+        ) a
+
+
+    </select>
+
+
+    <select id="gainPage5Collision" resultType="String">
+        SELECT  a.transferid from (SELECT t.transferid,count(tr.collision) collision FROM transfer t,transferRecord tr
+        WHERE t.transferid = tr.transfer_id
+
+        AND t.to_hosp_id=#{hospitalId}
+        AND t.getTime >= #{startTime}
+        AND t.getTime <![CDATA[ < ]]> #{endTime}
+        AND t.filterStatus = 0
+        AND tr.collision=1
+        GROUP  BY  t.transferid
+        ) a WHERE   a.collision > 0
+        UNION
+        SELECT  a.transferid from (SELECT t.transferid,tr.collision FROM transfer t LEFT  JOIN transferRecord tr
+        ON t.transferid = tr.transfer_id
+
+        WHERE t.to_hosp_id=#{hospitalId}
+        AND t.getTime >= #{startTime}
+        AND t.getTime <![CDATA[ < ]]> #{endTime}
+        AND t.filterStatus = 0
+        AND tr.collision is NULL
+        GROUP  BY  t.transferid
+        ) a
+
+    </select>
+
+    <select id="gainPage5CollisionDetailNormal" resultType="ReportDetail">
+
+        SELECT  organSeg,organ, transferPerson,fromCity,getTime,toHospName, id,collision FROM (
+        SELECT  organSeg,organ, transferPerson,fromCity,getTime,toHospName, id,collision from
+        (SELECT  t.transferNumber organSeg,t.organ,t.trueName transferPerson,t.fromCity,t.getTime,t.toHospName, t.transferid id,count(tr.collision) collision
+        FROM transfer t,transferRecord tr
+        WHERE
+        t.transferid = tr.transfer_id
+        AND t.to_hosp_id=#{hospitalId}
+        AND t.getTime >= #{startTime}
+        AND t.getTime <![CDATA[ < ]]> #{endTime}
+        AND t.filterStatus = 0
+        AND tr.collision=1
+        GROUP  BY  t.transferid
+        ) a WHERE   a.collision > 0
+        UNION
+        SELECT  organSeg,organ, transferPerson,fromCity,getTime,toHospName, id,if(collision,collision,-1) collision from (SELECT  t.transferNumber organSeg,t.organ,t.trueName transferPerson,t.fromCity,t.getTime,t.toHospName, t.transferid id,tr.collision collision FROM transfer t LEFT  JOIN  transferRecord tr
+        ON
+        t.transferid = tr.transfer_id
+        WHERE t.to_hosp_id=#{hospitalId}
+        AND t.getTime >= #{startTime}
+        AND t.getTime <![CDATA[ < ]]> #{endTime}
+        AND t.filterStatus = 0
+        AND tr.collision is NULL
+        GROUP  BY  t.transferid
+        ) a  )b   limit #{page},#{pageSize};
+
+    </select>
+    <select id="gainPage5CollisionDetailNormalTotalTemp" resultType="Integer">
+
+        SELECT  count(id) count FROM (
+        SELECT  organSeg,organ, transferPerson,fromCity,getTime,toHospName, id,collision from
+        (SELECT  t.transferNumber organSeg,t.organ,t.trueName transferPerson,t.fromCity,t.getTime,t.toHospName, t.transferid id,count(tr.collision) collision
+        FROM transfer t,transferRecord tr
+        WHERE
+        t.transferid = tr.transfer_id
+        AND t.to_hosp_id=#{hospitalId}
+        AND t.getTime >= #{startTime}
+        AND t.getTime <![CDATA[ < ]]> #{endTime}
+        AND t.filterStatus = 0
+        AND tr.collision=1
+        GROUP  BY  t.transferid
+        ) a WHERE   a.collision > 0
+        UNION
+        SELECT  organSeg,organ, transferPerson,fromCity,getTime,toHospName, id,if(collision,collision,-1) from (SELECT  t.transferNumber organSeg,t.organ,t.trueName transferPerson,t.fromCity,t.getTime,t.toHospName, t.transferid id,tr.collision collision FROM transfer t LEFT  JOIN  transferRecord tr
+        ON
+        t.transferid = tr.transfer_id
+        WHERE t.to_hosp_id=#{hospitalId}
+        AND t.getTime >= #{startTime}
+        AND t.getTime <![CDATA[ < ]]> #{endTime}
+        AND t.filterStatus = 0
+        AND tr.collision IS  NULL
+        GROUP  BY  t.transferid
+        ) a  )b
+
+    </select>
+
+    <select id="gainPage5CollisionDetailNormalTemp" resultType="String">
+
+        SELECT  id FROM (
+        SELECT  organSeg,organ, transferPerson,fromCity,getTime,toHospName, id,collision from
+        (SELECT  t.transferNumber organSeg,t.organ,t.trueName transferPerson,t.fromCity,t.getTime,t.toHospName, t.transferid id,count(tr.collision) collision
+        FROM transfer t,transferRecord tr
+        WHERE
+        t.transferid = tr.transfer_id
+        AND t.to_hosp_id=#{hospitalId}
+        AND t.getTime >= #{startTime}
+        AND t.getTime <![CDATA[ < ]]> #{endTime}
+        AND t.filterStatus = 0
+        AND tr.collision=1
+        GROUP  BY  t.transferid
+        ) a WHERE   a.collision > 0
+        UNION
+        SELECT  organSeg,organ, transferPerson,fromCity,getTime,toHospName, id,collision from (SELECT  t.transferNumber organSeg,t.organ,t.trueName transferPerson,t.fromCity,t.getTime,t.toHospName, t.transferid id,tr.collision collision FROM transfer t,transferRecord tr
+        WHERE
+        t.transferid = tr.transfer_id
+        AND t.to_hosp_id=#{hospitalId}
+        AND t.getTime >= #{startTime}
+        AND t.getTime <![CDATA[ < ]]> #{endTime}
+        AND t.filterStatus = 0
+        AND tr.collision=0
+        GROUP  BY  t.transferid
+        ) a  )b
+
+    </select>
+
+
+    <select id="gainPage5CollisionDetailNoNormal" resultType="ReportDetail">
+
+        SELECT  t.transferNumber organSeg,t.organ,t.trueName transferPerson,t.fromCity,t.getTime,t.toHospName, t.transferid id,count(tr.collision) collision FROM transfer t LEFT JOIN transferRecord tr
+        ON t.transferid = tr.transfer_id
+        WHERE
+        t.transferid = #{transferId}
+        AND  tr.collision=1
+        GROUP  BY  t.transferid
+        UNION
+        SELECT  t.transferNumber organSeg,t.organ,t.trueName transferPerson,t.fromCity,t.getTime,t.toHospName, t.transferid id,tr.collision  FROM transfer t LEFT JOIN transferRecord tr
+        ON t.transferid = tr.transfer_id
+        WHERE
+        t.transferid = #{transferId}
+        AND  tr.collision=0
+        GROUP  BY  t.transferid
+
+
+    </select>
+
+    <select id="gainPage5CollisionDetailTotal" resultType="String">
+        SELECT  t.id  FROM transfer t
+        WHERE  1=1
+        AND t.to_hosp_id=#{hospitalId}
+        AND t.getTime>=#{startTime}
+        AND t.getTime<![CDATA[ < ]]>#{endTime}
+        AND t.filterStatus = 0
+
+    </select>
+    <select id="gainPage5CollisionDetailNormalTotal" resultType="String">
+
+        SELECT  a.transferid from (SELECT t.transferid,count(tr.collision) collision FROM transfer t,transferRecord tr
+        WHERE t.transferid = tr.transfer_id
+
+        AND t.to_hosp_id=#{hospitalId}
+        AND t.getTime >= #{startTime}
+        AND t.getTime <![CDATA[ < ]]> #{endTime}
+        AND t.filterStatus = 0
+        AND tr.collision=1
+        GROUP  BY  t.transferid
+        ) a WHERE   a.collision > 0
+        UNION
+
+        SELECT  a.transferid from (SELECT t.transferid,tr.collision collision FROM transfer t LEFT  JOIN  transferRecord tr
+        ON t.transferid = tr.transfer_id
+
+        WHERE t.to_hosp_id=#{hospitalId}
+        AND t.getTime >= #{startTime}
+        AND t.getTime <![CDATA[ < ]]> #{endTime}
+        AND t.filterStatus = 0
+        AND tr.collision IS  NULL
+        GROUP  BY  t.transferid
+        ) a
+
+
+    </select>
+
+
+    <select id="gainPage5Temperature" resultType="String">
+    SELECT a.transferid from (SELECT t.transferid,avg(tr.temperature) avgT FROM transfer t,transferRecord tr
+    WHERE t.transferid = tr.transfer_id
+
+    AND t.to_hosp_id=#{hospitalId}
+    AND t.getTime>=#{startTime}
+    AND t.getTime<![CDATA[ < ]]>#{endTime}
+    AND t.filterStatus = 0
+    GROUP  BY  t.transferid
+    ) a WHERE  a.avgT <![CDATA[ <= ]]> 10;
+
+</select>
+
+
+    <select id="gainPage5TemperatureDetailNormal" resultType="ReportDetail">
+        SELECT  organSeg,organ, transferPerson,fromCity,getTime,toHospName,  id,if(avgT,FORMAT(avgT,1),22.22) avgT from (SELECT  t.transferNumber organSeg,t.organ,t.trueName transferPerson,t.fromCity,t.getTime,t.toHospName, t.transferid id,avg(tr.temperature) avgT FROM transfer t,transferRecord tr
+        WHERE
+        t.transferid = tr.transfer_id
+        AND t.to_hosp_id=#{hospitalId}
+        AND t.getTime>=#{startTime}
+        AND t.getTime<![CDATA[ < ]]>#{endTime}
+        AND t.filterStatus = 0
+        GROUP  BY  t.transferid
+        ) a WHERE  a.avgT <![CDATA[ <= ]]> 10 limit #{page},#{pageSize};
+
+    </select>
+    <select id="gainPage5TemperatureDetailNoNormal" resultType="ReportDetail">
+
+        SELECT  t.transferNumber organSeg,t.organ,t.trueName transferPerson,t.fromCity,t.getTime,t.toHospName, t.transferid id,FORMAT(avg(tr.temperature),1) avgT FROM transfer t LEFT JOIN transferRecord tr
+        ON t.transferid = tr.transfer_id
+        WHERE
+        t.transferid = #{transferId}
+        GROUP  BY  t.transferid
+
+
+    </select>
+
+    <select id="gainPage5TemperatureDetailTotal" resultType="String">
+        SELECT  t.id c FROM transfer t
+        WHERE  1=1
+        AND t.to_hosp_id=#{hospitalId}
+        AND t.getTime>=#{startTime}
+        AND t.getTime<![CDATA[ < ]]>#{endTime}
+        AND t.filterStatus = 0
+
+    </select>
+
+    <select id="gainPage5TemperatureDetailNormalTotal" resultType="String">
+
+    SELECT a.transferid from (SELECT t.transferid,avg(tr.temperature) avgT FROM transfer t,transferRecord tr
+    WHERE t.transferid = tr.transfer_id
+
+    AND t.to_hosp_id=#{hospitalId}
+    AND t.getTime>=#{startTime}
+    AND t.getTime<![CDATA[ < ]]>#{endTime}
+    AND t.filterStatus = 0
+    GROUP  BY  t.transferid
+    ) a WHERE  a.avgT <![CDATA[ <= ]]> 10;
+
+
+    </select>
+
+    <select id="gainPage5Total" resultType="Integer">
+        SELECT  count(id) c FROM transfer t
+        WHERE  1=1
+        AND t.to_hosp_id=#{hospitalId}
+        AND t.getTime>=#{startTime}
+        AND t.getTime<![CDATA[ < ]]>#{endTime}
+        AND t.filterStatus = 0
+    </select>
+
+
+    <select id="gainPage6" resultType="Page6">
+        SELECT t.tracfficType name,count(t.tracfficType) y FROM transfer t WHERE 1=1
+        AND t.to_hosp_id= #{hospitalId}
+        AND t.getTime>=#{startTime}
+        AND t.filterStatus=0
+        AND t.getTime<![CDATA[ < ]]>#{endTime}
+        GROUP BY t.tracfficType
+    </select>
+    <select id="gainPage6Detail" resultType="ReportDetail">
+        SELECT t.id,t.transferNumber organSeg,t.organ,t.trueName transferPerson,t.fromCity,t.getTime,t.toHospName  FROM transfer t WHERE  1=1
+        AND  t.to_hosp_id = #{hospitalId}
+        AND t.getTime <![CDATA[ < ]]> #{endTime}
+        AND t.getTime>=#{startTime}
+        AND t.tracfficType=#{method}
+         AND t.filterStatus=0
+         ORDER BY t.getTime DESC limit #{page},#{pageSize};
+    </select>
+
+    <select id="gainPage6DetailTotal" resultType="Integer">
+        SELECT count(t.id) c  FROM transfer t WHERE  1=1
+        AND  t.to_hosp_id = #{hospitalId}
+        AND t.getTime <![CDATA[ < ]]> #{endTime}
+         AND t.getTime>=#{startTime}
+           AND t.tracfficType=#{method}
+            AND t.filterStatus=0
+            GROUP BY t.tracfficType;
+    </select>
+    <select id="gainPage7" resultType="Page7">
+       SELECT u.true_name name,count(u.true_name) y FROM transfer t,transfer_group_temp tgt,users u
+       WHERE t.transferNumber = tgt.organSeg
+       AND tgt.usersIds LIKE CONCAT('%',u.phone,'%')
+       AND t.getTime>=#{startTime}
+       AND t.getTime<![CDATA[ < ]]>#{endTime}
+       AND t.filterStatus = 0
+       AND t.to_hosp_id=#{hospitalId}
+       GROUP BY u.true_name
+       ORDER BY COUNT(u.true_name) DESC LIMIT 3
+    </select>
+
+    <select id="gainPage7Total" resultType="Integer">
+        SELECT count(u.true_name) count FROM transfer t,transfer_group_temp tgt,users u
+        WHERE t.transferNumber = tgt.organSeg
+        AND tgt.usersIds LIKE CONCAT('%',u.phone,'%')
+        AND t.getTime>=#{startTime}
+        AND t.getTime<![CDATA[ < ]]>#{endTime}
+        AND t.filterStatus = 0
+        AND t.to_hosp_id=#{hospitalId}
+        ORDER BY t.transferid
+    </select>
+
+    <select id="gainPage7Detail" resultType="ReportDetail">
+
+        SELECT t.id,t.transferNumber organSeg,t.organ,u.true_name transferPerson,t.fromCity,t.getTime,t.toHospName FROM
+        transfer t,transfer_group_temp tgt,users u
+        WHERE t.transferNumber = tgt.organSeg
+        AND tgt.usersIds LIKE CONCAT('%',u.phone,'%')
+        AND t.getTime>=#{startTime}
+        AND t.getTime<![CDATA[ < ]]>#{endTime}
+        AND t.filterStatus = 0
+        AND t.to_hosp_id=#{hospitalId}
+        <if test="trueName!='全部'">AND u.true_name=#{trueName}</if>
+        GROUP BY t.id
+        limit #{page},#{pageSize};
+
+
+    </select>
+
+    <select id="gainPage8" resultType="Page8">
+        SELECT b.model name,count(b.model) y FROM transfer t,box b WHERE 1=1
+        AND t.box_id = b.boxid
+        AND t.to_hosp_id= #{hospitalId}
+        AND t.filterStatus=0
+        AND t.getTime>=#{startTime}
+        AND t.getTime<![CDATA[ < ]]>#{endTime}
+        GROUP BY t.box_id
+    </select>
+
+    <select id="gainPage8Detail" resultType="ReportDetail">
+        SELECT t.id,t.transferNumber organSeg,t.organ,t.trueName transferPerson,t.fromCity,t.getTime,t.toHospName  FROM transfer t,box b WHERE  1=1
+        AND t.box_id=b.boxid
+        AND  t.to_hosp_id = #{hospitalId}
+        AND t.getTime <![CDATA[ < ]]> #{endTime}
+        AND t.getTime>=#{startTime}
+        AND b.model=#{boxNo}
+        AND t.filterStatus=0
+        ORDER BY t.getTime DESC limit #{page},#{pageSize};
+    </select>
+
+    <select id="gainPage8DetailTotal" resultType="Integer">
+        SELECT count(t.id) c  FROM transfer t,box b WHERE  1=1
+        AND t.box_id=b.boxid
+        AND  t.to_hosp_id = #{hospitalId}
+        AND t.getTime <![CDATA[ < ]]> #{endTime}
+        AND t.getTime>=#{startTime}
+        AND b.model=#{boxNo}
+        AND t.filterStatus=0
+        GROUP BY t.box_id;
+    </select>
+
+
+</mapper>

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="transboxWeb:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="transboxWeb.war">
+      <element id="artifact" artifact-name="transboxWeb:war exploded" />
+    </root>
+  </artifact>
+</component>
