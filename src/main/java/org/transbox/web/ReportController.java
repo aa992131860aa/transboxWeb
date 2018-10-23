@@ -80,9 +80,9 @@ public class ReportController {
     ) {
         List<Page2> page2s = reportService.gainReportOrgan(hospitalId, startTime, endTime);
         int organTotal = 0;
-        int overOrganTotal=0;
+        int overOrganTotal = 0;
         //器官类型的字符
-        String organTypeStr="";
+        String organTypeStr = "";
         //最大的标识
         int organMax = 0;
         //Page2 maxPage2 = new Page2();
@@ -100,8 +100,8 @@ public class ReportController {
             }
 
             organTypeStr += page2s.get(i).getName();
-            if(i==page2s.size()-1){
-                ratio = 100-overOrganTotal;
+            if (i == page2s.size() - 1) {
+                ratio = 100 - overOrganTotal;
             }
             overOrganTotal += ratio;
             Page2 page2 = new Page2(page2s.get(i).getZ(), page2s.get(i).getName(), ratio);
@@ -110,32 +110,31 @@ public class ReportController {
         //maxPage2.setY(organMax * 100 / organTotal);
         //model.addAttribute("page2", newPages);
         //model.addAttribute("maxPage2", maxPage2);
-        if(!organTypeStr.contains("心脏")){
-            newPages.add(0,new Page2(0,"心脏",0));
+        if (!organTypeStr.contains("心脏")) {
+            newPages.add(0, new Page2(0, "心脏", 0));
         }
-        if(!organTypeStr.contains("肝脏")){
-            newPages.add(1,new Page2(0,"肝脏",0));
+        if (!organTypeStr.contains("肝脏")) {
+            newPages.add(1, new Page2(0, "肝脏", 0));
         }
-        if(!organTypeStr.contains("肾脏")){
-            newPages.add(2,new Page2(0,"肾脏",0));
+        if (!organTypeStr.contains("肾脏")) {
+            newPages.add(2, new Page2(0, "肾脏", 0));
         }
-        if(!organTypeStr.contains("肺")){
-            newPages.add(3,new Page2(0,"肺",0));
+        if (!organTypeStr.contains("肺")) {
+            newPages.add(3, new Page2(0, "肺", 0));
         }
-        if(!organTypeStr.contains("胰脏")){
-            newPages.add(4,new Page2(0,"胰脏",0));
+        if (!organTypeStr.contains("胰脏")) {
+            newPages.add(4, new Page2(0, "胰脏", 0));
         }
-        if(!organTypeStr.contains("眼角膜")){
-            newPages.add(5,new Page2(0,"眼角膜",0));
+        if (!organTypeStr.contains("眼角膜")) {
+            newPages.add(5, new Page2(0, "眼角膜", 0));
         }
 
 
-
-        for(int i=0;i<newPages.size();i++){
-              int yTemp = newPages.get(i).getY();
-              int zTemp = newPages.get(i).getZ();
-              newPages.get(i).setY(zTemp);
-              newPages.get(i).setZ(yTemp);
+        for (int i = 0; i < newPages.size(); i++) {
+            int yTemp = newPages.get(i).getY();
+            int zTemp = newPages.get(i).getZ();
+            newPages.get(i).setY(zTemp);
+            newPages.get(i).setZ(yTemp);
 
         }
         logger.error("list2={}", newPages);
@@ -161,19 +160,21 @@ public class ReportController {
         String address = reportService.gainZone(hospitalId);
         int organTotal = 0;
         //最大的标识
-        int organMax = 0;
+        int organMaxIndex = 0;
+        long organMaxValue = 0;
         //Page2 maxPage2 = new Page2();
         List<Page3> newPages = new ArrayList<Page3>();
         for (int i = 0; i < page2s.size(); i++) {
-            if (organMax < page2s.get(i).getValue()) {
+            if (organMaxValue < page2s.get(i).getValue()) {
 
-                organMax = i;
+                organMaxIndex = i;
+                organMaxValue = page2s.get(i).getValue();
             }
             organTotal += page2s.get(i).getValue();
         }
         for (int i = 0; i < page2s.size(); i++) {
             int ratio = (int) (page2s.get(i).getValue() * 100 / organTotal);
-            if (i == organMax) {
+            if (i == organMaxIndex) {
                 page2s.get(i).setFlag(100);
             }
             String color = "";
@@ -182,10 +183,10 @@ public class ReportController {
             } else {
                 color = "#FAD200";
             }
-            Page3 page2 = new Page3(color, page2s.get(i).getValue(), page2s.get(i).getName(), ratio, page2s.get(i).getFlag(),address.split("市")[0]);
+            Page3 page2 = new Page3(color, page2s.get(i).getValue(), page2s.get(i).getName(), ratio, page2s.get(i).getFlag(), address.split("市")[0]);
             newPages.add(page2);
         }
-        logger.error("list3Address={}", address+","+address.split("市")[0]);
+        logger.error("list3Address={}", address + "," + address.split("市")[0]);
         logger.error("list3={}", newPages);
         return new TransferWebResult<List<Page3>>(true, newPages);
     }
@@ -233,11 +234,11 @@ public class ReportController {
         } catch (ParseException e) {
             e.printStackTrace();
 
-            logger.error("list4={}", "报错了" + e.getMessage());
+
         }
 
 
-        logger.error("list4={}", page7s);
+
         return new TransferWebResult<List<Page4>>(true, page7s);
     }
 

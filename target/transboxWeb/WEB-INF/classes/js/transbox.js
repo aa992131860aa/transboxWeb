@@ -684,10 +684,10 @@ var transbox = {
                     $("#page2_tbody").append(child);
 
                     if (index['z'] == 100) {
-                        $("#page2_title").html('器官类型比例');
+                        //$("#page2_title").html('器官类型比例');
                         //+index['name'] + '转运占比最大:' + index['z'] + '%');
 
-                        $("#page2_conclude").html('本季度转运中，' + index['name'] + '转运最多，占比为:' + index['y'] + '%');
+                        $("#page2_title").html('结论:本季度转运中，' + index['name'] + '转运最多，占比为' + index['y'] + '%');
                     }
                 });
                 console.log('chart2')
@@ -815,11 +815,12 @@ var transbox = {
                 data.forEach(function (index) {
 
                     if (index['flag'] == 100) {
-                        $("#page3_title").html('器官来源分析');
+                        //$("#page3_title").html('器官来源分析');
                         //$("#page3_title").html(index['name'] + '转运占比最高:' + index['ratio'] + '%');
-                        $("#page3_conclude").html('本季度转运中，' + index['name'] + '的转运最多，占比为:' + index['ratio'] + '%');
+                        $("#page3_title").html('结论:本季度转运中，' + index['name'] + '的转运最多，转运次数' + index['value'] + '次');
 
                     }
+                    console.log('flag:' + index['name'] + ',' + index['flag'])
                     var obj = new Object();
                     if (index['name'].indexOf('省') != -1) {
                         obj['name'] = index['name'].split('省')[0];
@@ -1245,9 +1246,9 @@ var transbox = {
                     credits: {
                         enabled: false
                     },
-                        legend: {
-                            enabled: false
-                        },
+                    legend: {
+                        enabled: false
+                    },
                     colorAxis: {
                         min: 0,
                         minColor: '#b3e5ff',
@@ -1273,7 +1274,8 @@ var transbox = {
                                 show: false
                             }
                         },
-                        roam: true,
+                        //禁止缩放
+                        roam: false,
                         itemStyle: {
                             normal: {
                                 areaColor: '#f7f7f7',
@@ -1292,111 +1294,6 @@ var transbox = {
 
                 //使用制定的配置项和数据显示图表
                 myChart.setOption(option);
-
-                // 初始化图表
-                // new Highcharts.Map('container3', {
-                //     chart: {
-                //         backgroundColor: 'rgba(0,0,0,0)',
-                //
-                //     },
-                //     title: {
-                //         text: ''
-                //     }, credits: {
-                //         enabled: false
-                //     },
-                //     colorAxis: {
-                //         min: 0,
-                //         minColor: '#b3e5ff',
-                //         maxColor: '#009ef5'
-                //     },
-                //     series: [{
-                //         data: chart3,
-                //         name: '转运次数',
-                //         mapData: mapcharts,
-                //         joinBy: 'name', // 根据 name 属性进行关联
-                //         events: {
-                //             click: function (e) {
-                //                 console.log(e);
-                //
-                //                 param.province = e.point.name;
-                //                 param.total = e.point.value;
-                //
-                //
-                //                 transbox.chart3Page(param)
-                //             }
-                //         },
-                //     }]
-                // });
-
-                // $('#container3').highcharts({
-                //     chart: {
-                //         type: 'column',
-                //         backgroundColor: 'rgba(0,0,0,0)'
-                //     },
-                //     //colors: ['#4EBFFD', '#FAD200', '#2EC4B6'],
-                //     title: {
-                //         text: ' ',
-                //         margin: 100
-                //     },
-                //     credits: {
-                //         enabled: false
-                //     },
-                //     xAxis: {
-                //         type: 'category',
-                //         labels: {
-                //             rotation: 0,
-                //             style: {
-                //                 fontSize: '13px',
-                //                 fontFamily: 'Verdana, sans-serif'
-                //             }
-                //         }
-                //     },
-                //     yAxis: {
-                //         min: 0,
-                //         title: {
-                //             text: '转运次数 (次)'
-                //         },
-                //         stackLabels: {
-                //             enabled: true,
-                //             style: {
-                //                 //fontWeight: 'bold',
-                //                 //color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-                //             }
-                //         }
-                //     },
-                //     legend: {
-                //         enabled: false
-                //     },
-                //     tooltip: {
-                //         pointFormat:
-                //             '转运数量: <b>{point.y}次</b><br/>'
-                //     },
-                //     series: [{
-                //
-                //         data: data,
-                //         //     [
-                //         //     {'color': '#4EBFFD', 'y': 11, name: 'gg'},
-                //         //     {'color': '#FAD200', 'y': 12, name: 'gg1'},
-                //         //     {'color': '#4EBFFD', 'y': 13, name: 'gg2'},
-                //         //     {'color': '#FAD200', 'y': 14, name: 'gg3'}
-                //         //
-                //         // ],
-                //         maxPointWidth: 40,  //  最大宽度 采用svg宽度
-                //         dataLabels: {
-                //
-                //             enabled: true,
-                //             //rotation: 90,
-                //             color: '#000000',
-                //             align: 'center',
-                //             format: '{point.y}', // one decimal
-                //             y: 20, // 10 pixels down from the top
-                //             // style: {
-                //             //     fontSize: '13px',
-                //             //     fontFamily: 'Verdana, sans-serif'
-                //             // }
-                //         }
-                //     }]
-                // });
 
 
             }
@@ -1418,74 +1315,102 @@ var transbox = {
 
                     if (index['flag'] == 100) {
 
-                        $("#page4_title").html('大部分转运时长处于' + index['name'] + '小时,占比' + index['ratio'] + '%');
+                        $("#page4_title").html('结论:大部分转运时长处于' + index['name'] + '小时,转运' + index['num'] + '次');
                     }
+
+                    if (chart4.length == 0) {
+                        $("#page4_tbody").empty();
+                    }
+
+                    //添加到table的tbody里面
+                    var child = '<tr><td>' + index['name'] + '</td><td>' + index['num'] + '</td></tr>'
+                    $("#page4_tbody").append(child);
+
 
                     chart4.push(index['num']);
 
                 });
+
+
                 $('#container4').highcharts({
                     chart: {
-                        backgroundColor: 'rgba(0,0,0,0)',
-                        polar: true,
-                        type: 'line',
-
+                        type: 'column',
+                        backgroundColor: 'rgba(0,0,0,0)'
                     },
+                    //colors: ['#4EBFFD', '#FAD200', '#2EC4B6'],
                     title: {
-                        text: '',
-                        x: -80
+                        text: ' ',
+                        margin: 100
                     },
                     credits: {
                         enabled: false
                     },
-                    pane: {
-                        size: '80%'
-                    },
-                    chart: {
-                        polar: true
-                    },
                     xAxis: {
+                        type: 'category',
                         categories: ['0-6', '6-12', '12-18', '18-24',
                             '24以上'],
-                        tickmarkPlacement: 'on',
-                        lineWidth: 0,
                         labels: {
-                            y: 20, //x轴刻度往下移动20px
+                            rotation: 0,
                             style: {
-                                color: '#4EBFFD',//颜色
-                                fontSize: '16px'  //字体
+                                fontSize: '13px',
+                                fontFamily: 'Verdana, sans-serif'
                             }
-                        },
+                        }
                     },
                     yAxis: {
-                        gridLineInterpolation: 'polygon',
-                        lineWidth: 1,
-
-                        min: 0
-                    },
-                    tooltip: {
-                        shared: true,
-                        pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y:,.0f}</b><br/>'
+                        min: 0,
+                        title: {
+                            text: '转运次数 (次)'
+                        },
+                        stackLabels: {
+                            enabled: true,
+                            style: {
+                                //fontWeight: 'bold',
+                                //color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                            }
+                        }
                     },
                     legend: {
-                        align: 'right',
-                        verticalAlign: 'top',
-                        y: 70,
-                        layout: 'vertical'
+                        enabled: false
+                    },
+                    tooltip: {
+                        pointFormat:
+                            '转运数量: <b>{point.y}次</b><br/>'
                     },
                     series: [{
-                        color: '#4EBFFD',
-                        type: 'area',
-                        name: '转运耗时次数',
+
                         data: chart4,
-                        pointPlacement: 'on',
+                        //     [
+                        //     {'color': '#4EBFFD', 'y': 11, name: 'gg'},
+                        //     {'color': '#FAD200', 'y': 12, name: 'gg1'},
+                        //     {'color': '#4EBFFD', 'y': 13, name: 'gg2'},
+                        //     {'color': '#FAD200', 'y': 14, name: 'gg3'}
+                        //
+                        // ],
                         events: {
                             click: function (e) {
-                                console.log(e);
-                                param.total = e.y;
-                                param.name = e.point.category;
-                                //transbox.chart4Page(param)
+                                console.log(e)
+
+
+                                param.method = e.point.category;
+
+
+                                // transbox.chart4Page(param)
                             }
+                        },
+                        maxPointWidth: 40,  //  最大宽度 采用svg宽度
+                        dataLabels: {
+
+                            enabled: true,
+                            //rotation: 90,
+                            color: '#000000',
+                            align: 'center',
+                            format: '{point.y}', // one decimal
+                            y: 20, // 10 pixels down from the top
+                            // style: {
+                            //     fontSize: '13px',
+                            //     fontFamily: 'Verdana, sans-serif'
+                            // }
                         }
                     }]
                 });
@@ -1510,6 +1435,17 @@ var transbox = {
                 var three = [];
 
                 data.forEach(function (index) {
+                    if (flag == 0) {
+                        $("#page5_tbody").empty();
+                    }
+
+                    if (flag % 2 != 0) {
+                        //添加到table的tbody里面
+                        var child = '<tr><td>' + index['name'] + '</td><td>' + index['y'] + '%</td></tr>'
+                        $("#page5_tbody").append(child);
+                    }
+
+
                     if (flag == 0) {
                         index['color'] = '#4EBFFD';
                         one.push(index);
@@ -1828,7 +1764,11 @@ var transbox = {
                     }
                     flag++;
                 })
-                $("#page5_title").html('注意!' + data[maxIndex]['name'] + '异常占比高达' + data[maxIndex]['y'] + '%');
+
+
+                $("#page5_title").html('结论:' + data[maxIndex]['name'] + '异常的比例最高,比例为' + data[maxIndex]['y'] + '%');
+
+                // $("#page5_title").html('注意!' + data[maxIndex]['name'] + '异常占比高达' + data[maxIndex]['y'] + '%');
             }
         });
     },
@@ -1841,11 +1781,20 @@ var transbox = {
         }, function (result) {
             if (result && result['success']) {
                 var data = result['data'];
+                var chart6 = [];
                 data.forEach(function (index) {
 
                     if (index['flag'] == 100) {
-                        $("#page6_title").html('最常用的交通工具是' + index['name']);
+                        $("#page6_title").html('结论:最常用的交通工具是' + index['name'] + ',转运' + index['y'] + '次');
                     }
+                    if (chart6.length == 0) {
+                        $("#page6_tbody").empty();
+                    }
+
+                    //添加到table的tbody里面
+                    var child = '<tr><td>' + index['name'] + '</td><td>' + index['y'] + '</td></tr>'
+                    $("#page6_tbody").append(child);
+                    chart6.push(index)
                 });
                 $('#container6').highcharts({
                     chart: {
@@ -1945,7 +1894,16 @@ var transbox = {
                 var three = [];
                 data.forEach(function (index) {
                     if (flag == 0) {
-                        $("#page7_title").html(index['name'] + '转运次数最多');
+                        $("#page7_tbody").empty();
+                    }
+
+
+                    //添加到table的tbody里面
+                    var child = '<tr><td>' + index['name'] + '</td><td>' + index['y'] + '</td></tr>'
+                    $("#page7_tbody").append(child);
+
+                    if (flag == 0) {
+                        $("#page7_title").html('结论'+index['name'] + '转运最多,转运'+index['y']+'次');
                         $("#page7_one").html(index['name']);
 
 
@@ -2280,11 +2238,21 @@ var transbox = {
         }, function (result) {
             if (result && result['success']) {
                 var data = result['data'];
+                var chart8 = [];
                 data.forEach(function (index) {
 
                     if (index['flag'] == 100) {
-                        $("#page8_title").html(index['name'] + '号箱子使用率最高');
+                        $("#page8_title").html('结论:最常用的箱子编号是' + index['name'] + ',转运' + index['y'] + '次');
                     }
+                    if (chart8.length == 0) {
+                        $("#page8_tbody").empty();
+                    }
+
+                    //添加到table的tbody里面
+                    var child = '<tr><td>' + index['name'] + '</td><td>' + index['y'] + '</td></tr>'
+                    $("#page8_tbody").append(child);
+                    chart8.push(index)
+
                 });
                 $('#container8').highcharts({
                     chart: {

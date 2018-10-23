@@ -64,7 +64,7 @@
                 verticalCentered: false,
                 anchors: ['page1', 'page2', 'page3', 'page4', 'page5', 'page6', 'page7', 'page8'],
                 navigation: true,
-                navigationTooltips: ['', '', '', '', '', '', '', '']
+                navigationTooltips: ['', '', '', '', '', '', '']
             });
 
         });
@@ -90,7 +90,7 @@
         <!--中心圆-->
         <div class="bg1_04 fadeIn animated animated" data-wow-delay="1s"></div>
         <!--文字-->
-        <div class="bg1_03 pwhile p36 wow ">
+        <div class="bg1_03 pwhile p36 wow fadeInDown animated animated" data-wow-delay="0.5s">
             <div style="display: table-cell;vertical-align: middle;text-align: center">${hospitalName}<br><strong
                     style="font-size: 40px">中国移植器官转运及质控</strong><br/>${title}
             </div>
@@ -150,16 +150,16 @@
         <!--<div class="bg2_06"></div>-->
         <!--<div class="bg2_07"></div>-->
 
-        <div class="bg2_02 p18 wow pwhile">
-            <center><span class="p18">${title}</span>
-                <p></p><strong
-                        class="p25">器官类型比例</strong></center>
-        </div>
-        <div class="bg2_03"> <span
-                id="page2_title">结论:</span></div>
+        <div class="bg2_02 p18 wow pwhile fadeInDown animated animated" data-wow-delay="1s"><center><span class="p18">${title}</span> <p></p><strong
+                class="p25" id="page2_title">器官类型比例</strong></center></div>
+        <div class="bg2_03"><img src="/resources/img/icon_form.png" style="vertical-align: middle;margin-right: 10px;"
+                                 alt=""/><span
+                style="">器官类型占比(%)</span></div>
+
 
 
     </div>
+
     <div class="section section3" data-anchor="page3">
         <div class="bg2"></div>
         <div class="bg2_01"></div>
@@ -189,67 +189,31 @@
 
         </div>
 
-        <div class="bg2_02 p18 wow pwhile fadeInDown animated animated" data-wow-delay="1s">
-            <center><span class="p18">${title}</span>:<br/><strong
-                    class="p25">器官来源分析</strong></center>
-        </div>
-        <div class="bg2_03">
-
-            <span
-                    id="page3_title">各省转运数量(次)</span></div>
+        <div class="bg2_02 p18 wow pwhile fadeInDown animated animated" data-wow-delay="1s"><center><span class="p18">${title}</span>:<br/><strong
+                class="p25" id="page3_title">器官来源分析</strong></center></div>
+        <div class="bg2_03"><img src="/resources/img/icon_form.png" style="vertical-align: middle;margin-right: 10px;"
+                                 alt=""/><span
+                style="">各省转运数量(次)</span></div>
 
     </div>
     <div class="section section4" data-anchor="page4">
         <div class="bg2"></div>
         <div class="bg2_01"></div>
-        <div class="bg3_02">
-            <table width="100%" class="table table-bordered">
-                <caption></caption>
-                <thead>
-                <tr>
-                    <th>转运时长(小时)</th>
-                    <th>转运次数</th>
-
-                </tr>
-                </thead>
-                <tbody id="page4_tbody" align="center">
-
-
-                </tbody>
-            </table>
-        </div>
-        <div class="bg4_04" id="container4"></div>
+        <div class="bg2_04" id="container4"></div>
         <!--<div class="bg2_05"></div>-->
         <!--<div class="bg2_06"></div>-->
         <!--<div class="bg2_07"></div>-->
 
-        <div class="bg2_02 p18 wow pwhile fadeInDown animated animated" data-wow-delay="1s">
-            <center><span class="p18">${title}</span>:<br/><strong
-                    class="p25">转运时长分析</strong></center>
-        </div>
-        <div class="bg2_03"> <span
-                id="page4_title">转运耗时情况(小时)</span></div>
+        <div class="bg2_02 p18 wow pwhile fadeInDown animated animated" data-wow-delay="1s"><span class="p18">${title}</span>:<br/><strong
+                class="p25" id="page4_title">大部分转运时长处于12-18小时,占比68%</strong></div>
+        <div class="bg2_03"><img src="/resources/img/icon_form.png" style="vertical-align: middle;margin-right: 10px;"
+                                 alt=""/><span
+                style="">转运耗时情况(小时)</span></div>
 
     </div>
     <div class="section section5" data-anchor="page5">
         <div class="bg2"></div>
         <div class="bg2_01"></div>
-        <div class="bg3_02">
-            <table width="100%" class="table table-bordered">
-                <caption></caption>
-                <thead>
-                <tr>
-                    <th>异常</th>
-                    <th>异常比例(%)</th>
-
-                </tr>
-                </thead>
-                <tbody id="page5_tbody" align="center">
-
-
-                </tbody>
-            </table>
-        </div>
         <div class="bg2_04" id="container">
             <div class="bg2_04_01" id="container51"></div>
             <div class="bg2_04_03">温度</div>
@@ -266,65 +230,31 @@
         <!--<div class="bg2_06"></div>-->
         <!--<div class="bg2_07"></div>-->
 
-        <div class="bg2_02 p18 wow pwhile fadeInDown animated animated" data-wow-delay="1s">
-            <center><span class="p18">${title}</span>:<br/><strong
-                    class="p25">转运异常分析</strong></center>
-        </div>
-        <div class="bg2_03"> <span
-                id="page5_title">结论</span></div>
+        <div class="bg2_02 p18 wow pwhile fadeInDown animated animated" data-wow-delay="1s"><span class="p18">${title}</span>:<br/><strong
+                class="p25" id="page5_title">注意!温度异常占比高达68%</strong></div>
+        <div class="bg2_03"><img src="/resources/img/icon_form.png" style="vertical-align: middle;margin-right: 10px;"
+                                 alt=""/><span
+                style="">发生异常占比</span></div>
 
     </div>
     <div class="section section6" data-anchor="page6">
         <div class="bg2"></div>
         <div class="bg2_01"></div>
-        <div class="bg3_02">
-            <table width="100%" class="table table-bordered">
-                <caption></caption>
-                <thead>
-                <tr>
-                    <th>交通工具</th>
-                    <th>转运次数</th>
-
-                </tr>
-                </thead>
-                <tbody id="page6_tbody" align="center">
-
-
-                </tbody>
-            </table>
-        </div>
-        <div class="bg4_04" id="container6"></div>
+        <div class="bg2_04" id="container6"></div>
         <!--<div class="bg2_05"></div>-->
         <!--<div class="bg2_06"></div>-->
         <!--<div class="bg2_07"></div>-->
 
-        <div class="bg2_02 p18 wow pwhile fadeInDown animated animated" data-wow-delay="1s">
-            <center><span class="p18">${title}</span>:<br/><strong
-                    class="p25">交通工具分析</strong></center>
-        </div>
-        <div class="bg2_03"> <span
-                id="page6_title">结论</span></div>
+        <div class="bg2_02 p18 wow pwhile fadeInDown animated animated" data-wow-delay="1s"><span class="p18">${title}</span>:<br/><strong
+                class="p25" id="page6_title">最常用的交通工具是救护车</strong></div>
+        <div class="bg2_03"><img src="/resources/img/icon_form.png" style="vertical-align: middle;margin-right: 10px;"
+                                 alt=""/><span
+                style="">图表内容</span></div>
 
     </div>
     <div class="section section7" data-anchor="page7">
         <div class="bg2"></div>
         <div class="bg2_01"></div>
-        <div class="bg3_02">
-            <table width="100%" class="table table-bordered">
-                <caption></caption>
-                <thead>
-                <tr>
-                    <th>转运人</th>
-                    <th>转运次数</th>
-
-                </tr>
-                </thead>
-                <tbody id="page7_tbody" align="center">
-
-
-                </tbody>
-            </table>
-        </div>
         <div class="bg2_04" id="">
             <div class="bg2_04_01" id="container71"></div>
             <div class="bg2_04_03" id="page7_one"></div>
@@ -341,44 +271,26 @@
         <!--<div class="bg2_06"></div>-->
         <!--<div class="bg2_07"></div>-->
 
-        <div class="bg2_02 p18 wow pwhile fadeInDown animated animated" data-wow-delay="1s">
-            <center><span class="p18">${title}</span>:<br/><strong
-                    class="p25">转运人员分析</strong></center>
-        </div>
-        <div class="bg2_03"> <span
-                id="page7_title">结论</span></div>
+        <div class="bg2_02 p18 wow pwhile fadeInDown animated animated" data-wow-delay="1s"><span class="p18">${title}</span>:<br/><strong
+                class="p25" id="page7_title">王医生</strong></div>
+        <div class="bg2_03"><img src="/resources/img/icon_form.png" style="vertical-align: middle;margin-right: 10px;"
+                                 alt=""/><span
+                style="">医师工作量(次)</span></div>
 
     </div>
     <div class="section section8" data-anchor="page8">
         <div class="bg2"></div>
         <div class="bg2_01"></div>
-        <div class="bg3_02">
-            <table width="100%" class="table table-bordered">
-                <caption></caption>
-                <thead>
-                <tr>
-                    <th>箱子编号</th>
-                    <th>转运次数</th>
-
-                </tr>
-                </thead>
-                <tbody id="page8_tbody" align="center">
-
-
-                </tbody>
-            </table>
-        </div>
-        <div class="bg4_04" id="container8"></div>
+        <div class="bg2_04" id="container8"></div>
         <!--<div class="bg2_05"></div>-->
         <!--<div class="bg2_06"></div>-->
         <!--<div class="bg2_07"></div>-->
 
-        <div class="bg2_02 p18 wow pwhile fadeInDown animated animated" data-wow-delay="1s">
-            <center><span class="p18">${title}</span>:<br/><strong
-                    class="p25">箱子使用频率分析</strong></center>
-        </div>
-        <div class="bg2_03"> <span
-                id="page8_title" >结论</span></div>
+        <div class="bg2_02 p18 wow pwhile fadeInDown animated animated" data-wow-delay="1s"><span class="p18">${title}</span>:<br/><strong
+                class="p25" id="page8_title">34523号箱子使用率最高</strong></div>
+        <div class="bg2_03"><img src="/resources/img/icon_form.png" style="vertical-align: middle;margin-right: 10px;"
+                                 alt=""/><span
+                style="">箱子使用次数(次)</span></div>
 
     </div>
 

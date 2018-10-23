@@ -288,8 +288,8 @@ body {
     z-index: 0;
 }
 
-/*.active .bg1_04 { opacity: 1; -webkit-transform:scale(1, 1); transform:scale(1, 1); transition-delay: 0.7s;}*/
-/*.ltie10 .bg1_04 { opacity: 1; -webkit-transform:scale(5, 5); transform:scale(5, 5); transition-delay: 0.7s;}*/
+.active .bg1_04 { opacity: 1; -webkit-transform:scale(1, 1); transform:scale(1, 1); transition-delay: 0.7s;}
+.ltie10 .bg1_04 { opacity: 1; -webkit-transform:scale(5, 5); transform:scale(5, 5); transition-delay: 0.7s;}
 /*外边圆*/
 .bg1_02 {
     position: absolute;
@@ -301,14 +301,14 @@ body {
     margin: -331px 0 0 -331px;
     background: url(/resources/img/bg_center_line.png) no-repeat;
     opacity: 1;
-    -webkit-transform: scale(0.5, 0.5);
-    transform: scale(0.5, 0.5);
-    transition: all 0.7s;
+    /*-webkit-transform: scale(0.5, 0.5);*/
+    /*transform: scale(0.5, 0.5);*/
+    /*transition: all 0.7s;*/
     z-index: 4;
 }
 
 /*.active .bg1_02 { opacity: 1; -webkit-transform:scale(1, 1); transform:scale(1, 1); transition-delay: 0.7s;}*/
-/**/
+
 @-webkit-keyframes rotation {
     from {
         -webkit-transform: rotate(0deg);
@@ -318,13 +318,13 @@ body {
     }
 }
 
-.bg1_02 {
-    -webkit-transform: rotate(360deg);
-    animation: rotation 3s linear infinite;
-    -moz-animation: rotation 3s linear infinite;
-    -webkit-animation: rotation 3s linear infinite;
-    -o-animation: rotation 3s linear infinite;
-}
+/*.bg1_02 {*/
+    /*-webkit-transform: rotate(360deg);*/
+    /*animation: rotation 3s linear infinite;*/
+    /*-moz-animation: rotation 3s linear infinite;*/
+    /*-webkit-animation: rotation 3s linear infinite;*/
+    /*-o-animation: rotation 3s linear infinite;*/
+/*}*/
 
 /* 文字*/
 .bg1_03 {
@@ -336,7 +336,7 @@ body {
 
     margin: -268px 0 0 -268px;
     z-index: 1;
-    transition: all 1s;
+    /*transition: all 1s;*/
     display: table;
 }
 
@@ -390,168 +390,83 @@ body {
     width: 62px;
     height: 64px;
     background: url("/resources/img/bg_red.png") no-repeat;
-    left: -15%;
-    top: -30%;
-    transition: all 1s;
-}
-
-.active .bg1_11 {
     left: 15%;
     top: 15%;
-
-    transition-delay: 0.7s;
+    /*transition: all 1s;*/
 }
 
-.ltie10 .bg1_11 {
-    left: 15%;
-    top: 15%;
 
-    transition-delay: 0.7s;
-}
 
 .bg1_12 {
     position: absolute;
     width: 62px;
     height: 64px;
     background: url("/resources/img/bg_blue_s.png") no-repeat;
-    left: -62%;
-    top: -10%;
-    transition: all 1s;
-}
-
-.active .bg1_12 {
     left: 25%;
     top: 55%;
-
-    transition-delay: 0.7s;
+    /*transition: all 1s;*/
 }
 
-.ltie10 .bg1_12 {
-    left: 12%;
-    top: 55%;
 
-    transition-delay: 0.7s;
-}
 
 .bg1_13 {
     position: absolute;
     width: 112px;
     height: 102px;
     background: url("/resources/img/bg_yellow.png") no-repeat;
-    left: -100%;
-    top: -10%;
-    transition: all 1s;
-}
-
-.active .bg1_13 {
     left: 12%;
     top: 80%;
 
-    transition-delay: 0.7s;
 }
 
-.ltie10 .bg1_13 {
-    left: 12%;
-    top: 55%;
 
-    transition-delay: 0.7s;
-}
 
 .bg1_14 {
     position: absolute;
     width: 62px;
     height: 64px;
     background: url("/resources/img/bg_blue.png") no-repeat;
-    right: -15%;
-    top: -30%;
+    right: 15%;
+    top: 5%;
     transition: all 1s;
 }
 
-.active .bg1_14 {
-    right: 15%;
-    top: 5%;
 
-    transition-delay: 0.7s;
-}
-
-.ltie10 .bg1_14 {
-    left: 15%;
-    top: 5%;
-
-    transition-delay: 0.7s;
-}
 
 .bg1_15 {
     position: absolute;
     width: 62px;
     height: 64px;
     background: url("/resources/img/bg_red_s.png") no-repeat;
-    right: -62%;
-    top: -10%;
-    transition: all 1s;
-}
-
-.active .bg1_15 {
     right: 12%;
     top: 53%;
 
-    transition-delay: 0.7s;
 }
 
-.ltie10 .bg1_15 {
-    right: 12%;
-    top: 53%;
 
-    transition-delay: 0.7s;
-}
 
 .bg1_16 {
     position: absolute;
     width: 72px;
     height: 74px;
     background: url("/resources/img/bg_green.png") no-repeat;
-    right: -100%;
-    top: -10%;
-    transition: all 1s;
-}
-
-.active .bg1_16 {
     right: 22%;
     top: 72%;
 
-    transition-delay: 0.7s;
 }
 
-.ltie10 .bg1_16 {
-    right: 22%;
-    top: 72%;
 
-    transition-delay: 0.7s;
-}
 
 .bg1_17 {
     position: absolute;
     width: 62px;
     height: 64px;
     background: url("/resources/img/bg_yellow_s.png") no-repeat;
-    right: -25%;
-    top: -30%;
-    transition: all 1s;
-}
-
-.active .bg1_17 {
     right: 34%;
     top: 15%;
 
-    transition-delay: 0.7s;
 }
 
-.ltie10 .bg1_17 {
-    left: 15%;
-    top: 5%;
-
-    transition-delay: 0.7s;
-}
 
 .bg2_04 {
     position: absolute;
@@ -559,14 +474,15 @@ body {
     height: 404px;
 
 
-    top: 50%;
+    top: 53%;
     margin: -202px 0px 0 20%;
-    opacity: 0;
-    -webkit-transform: scale(0.5, 0.5);
-    transform: scale(0.5, 0.5);
-    transition: all 0.7s;
+    opacity: 1;
+    /*-webkit-transform: scale(0.5, 0.5);*/
+    /*transform: scale(0.5, 0.5);*/
+    /*transition: all 0.7s;*/
     z-index: 6;
 }
+
 .bg2_04_b{
     position: absolute;
     margin-top: 520px;
@@ -631,30 +547,29 @@ body {
     position: absolute;
     width: 20%;
     height: 404px;
-    /*left: 50%;*/
+
     left: 5%;
 
     top: 50%;
     margin: -202px 0px 0 5%;
-    opacity: 0;
-    -webkit-transform: scale(0.5, 0.5);
-    transform: scale(0.5, 0.5);
-    transition: all 0.7s;
+    opacity: 1;
+
     z-index: 6;
 }
 
-.ltie10 .bg3_02 {
-    opacity: 1;
-    transform: scale(1, 1);
-    transition-delay: 0.7s;
-}
+.bg4_04 {
+    position: absolute;
+    width: 70%;
+    height: 404px;
 
-.active .bg3_02 {
 
+    top: 53%;
+    margin: -202px 0px 0 30%;
     opacity: 1;
-    -webkit-transform: scale(1, 1);
-    transform: scale(1, 1);
-    transition-delay: 0.7s;
+    /*-webkit-transform: scale(0.5, 0.5);*/
+    /*transform: scale(0.5, 0.5);*/
+    /*transition: all 0.7s;*/
+    z-index: 6;
 }
 
 
@@ -668,39 +583,39 @@ body {
 
     top: 50%;
     margin: -302px 0px 0 5%;
-    opacity: 0;
-    -webkit-transform: scale(0.5, 0.5);
-    transform: scale(0.5, 0.5);
-    transition: all 0.7s;
+    opacity: 1;
+    /*-webkit-transform: scale(0.5, 0.5);*/
+    /*transform: scale(0.5, 0.5);*/
+    /*transition: all 0.7s;*/
     z-index: 6;
 }
 
-.ltie10 .bg3_04 {
-    opacity: 1;
-    transform: scale(1, 1);
-    transition-delay: 0.7s;
-}
+/*.ltie10 .bg3_04 {*/
+    /*opacity: 1;*/
+    /*transform: scale(1, 1);*/
+    /*transition-delay: 0.7s;*/
+/*}*/
 
-.active .bg3_04 {
+/*.active .bg3_04 {*/
 
-    opacity: 1;
-    -webkit-transform: scale(1, 1);
-    transform: scale(1, 1);
-    transition-delay: 0.7s;
-}
+    /*opacity: 1;*/
+    /*-webkit-transform: scale(1, 1);*/
+    /*transform: scale(1, 1);*/
+    /*transition-delay: 0.7s;*/
+/*}*/
 
-.ltie10 .bg2_04 {
-    opacity: 1;
-    transform: scale(1, 1);
-    transition-delay: 0.7s;
-}
+/*.ltie10 .bg2_04 {*/
+    /*opacity: 1;*/
+    /*transform: scale(1, 1);*/
+    /*transition-delay: 0.7s;*/
+/*}*/
 
-.active .bg2_04 {
-    opacity: 1;
-    -webkit-transform: scale(1, 1);
-    transform: scale(1, 1);
-    transition-delay: 0.7s;
-}
+/*.active .bg2_04 {*/
+    /*opacity: 1;*/
+    /*-webkit-transform: scale(1, 1);*/
+    /*transform: scale(1, 1);*/
+    /*transition-delay: 0.7s;*/
+/*}*/
 
 
 .bg2_05 {
@@ -1019,32 +934,32 @@ body {
 
 .bg2_02 {
     position: absolute;
-    left: 10%;
+    left: 5%;
     top: 5%;
     width: 1180px;
     height: 44px;
-    margin: -100px 0 0 -0px;
+    margin: 0px 0 0 -0px;
     transition: all 1s;
 
 }
 
-.ltie10 .bg2_02 {
-    top: 5%;
-    margin-top: 0px;
-    transition-delay: 0.7s;
-}
+/*.ltie10 .bg2_02 {*/
+    /*top: 5%;*/
+    /*margin-top: 0px;*/
+    /*transition-delay: 0.7s;*/
+/*}*/
 
-.active .bg2_02 {
-    top: 5%;
-    margin-top: 0px;
-    transition-delay: 0.7s;
-}
+/*.active .bg2_02 {*/
+    /*top: 5%;*/
+    /*margin-top: 0px;*/
+    /*transition-delay: 0.7s;*/
+/*}*/
 
 .bg2_03 {
 
     position: absolute;
     left: 10%;
-    top: 17%;
+    top: 90%;
     width: 1180px;
     height: 40px;
     margin: -0px 0 0 -0px;
@@ -1052,22 +967,22 @@ body {
 
 }
 
-.ltie10 .bg2_03 {
-    left: 10%;
-    top: 17%;
+/*.ltie10 .bg2_03 {*/
+    /*left: 10%;*/
+    /*top: 17%;*/
 
-    margin-top: 0px;
-    transition-delay: 0.7s;
+    /*margin-top: 0px;*/
+    /*transition-delay: 0.7s;*/
 
-}
+/*}*/
 
-.active .bg2_03 {
-    left: 10%;
-    top: 17%;
-    margin-top: 0px;
-    transition-delay: 0.7s;
+/*.active .bg2_03 {*/
+    /*left: 10%;*/
+    /*top: 17%;*/
+    /*margin-top: 0px;*/
+    /*transition-delay: 0.7s;*/
 
-}
+/*}*/
 
 .bg11 {
     position: absolute;
